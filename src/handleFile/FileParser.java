@@ -8,12 +8,13 @@ public class FileParser {
 	
 	public ArrayList<String> parseLocalFiles() {
 		File localFolder = new File(".");
-		String[] localFileList = localFolder.list();
+		File[] listFiles = localFolder.listFiles();
 		ArrayList<String> scriptList = new ArrayList<String>();
-		for(int i = 0 ; i < localFileList.length ; i++) {
-			if(localFileList[i].contains("_")
-					&& localFileList[i].contains(".txt"))
-				scriptList.add(localFileList[i]);
+		for(File f : listFiles) {
+			if(f.toString().contains("_")
+					&& (f.toString().contains(".txt") 
+							|| f.isDirectory()))
+				scriptList.add(f.toString().substring(2));
 		}
 		return scriptList;
 	}

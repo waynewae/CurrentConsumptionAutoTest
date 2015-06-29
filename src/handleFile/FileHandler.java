@@ -22,6 +22,9 @@ public class FileHandler {
    			fileName = listModel.getElementAt(i);
    			if(fileName.contains(".")) {
    				prefix = fileName.substring(0, fileName.indexOf('.'));
+   			} else {
+   				prefix = fileName;
+   			}
 	   			name = prefix.substring(0, prefix.indexOf('_'));
 	   			duration = prefix.substring(prefix.indexOf('_'));
 	   			
@@ -43,7 +46,6 @@ public class FileHandler {
 		   					+ " /trigger=DTYD" + duration + "A "
 		   					+ "/vout=3.8 /USB=AUTO /keeppower /noexitwait" + "\n");
 	   			}
-   			}
    		}	        
         bat.flush();
         bat.close();
@@ -51,25 +53,27 @@ public class FileHandler {
 	
 	public void exportScript (ListModel<String> listModel) {
 		for(int i = 0 ; i < listModel.getSize() ; i++) {
-			fileName = listModel.getElementAt(i).substring(0, listModel.getElementAt(i).indexOf('.'));
-			
-			// create config.xml
-			dirPath = "./" + fileName;
-			configPath = dirPath + "/config.xml";
-			File config = new File(dirPath);
-			config.mkdirs();
-			
-			// write it
-			try {
-				createConfig(configPath);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			// move script into dir
-			moveScript(fileName + ".txt", dirPath + "/" + fileName + ".txt");
-			
+			fileName = listModel.getElementAt(i);			
+			if(fileName.contains(".")) {
+				prefix = fileName.substring(0, listModel.getElementAt(i).indexOf('.'));
+				
+				// create config.xml
+				dirPath = "./" + prefix;
+				configPath = dirPath + "/config.xml";
+				File config = new File(dirPath);
+				config.mkdirs();
+				
+				// write it
+				try {
+					createConfig(configPath);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				// move script into dir
+				moveScript(fileName , dirPath + "/" + fileName + ".txt");
+			}		
 		}
 	}
 	
