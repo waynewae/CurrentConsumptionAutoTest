@@ -10,9 +10,11 @@ public class FileHandler {
 	String fileName;
 	String prefix;
 	String name;
-	String duration;
+	String durationStr;
 	String configPath;
 	String dirPath;
+	
+	int duration = 0;
 	
 	public FileHandler() {}
 	
@@ -26,11 +28,18 @@ public class FileHandler {
    				prefix = fileName;
    			}
 	   			name = prefix.substring(0, prefix.indexOf('_'));
-	   			duration = prefix.substring(prefix.indexOf('_'));
+	   			durationStr = prefix.substring(prefix.indexOf('_') + 1);
 	   			
 	   			// if not 1st script, wait 10s
 	   			if(i != 0) {
-	   				bat.write("ping 127.0.0.1 -n 10 -w 1000 > nul" + "\n");
+	   				if(CurrMeas == 1) {
+	   					bat.write("ping 127.0.0.1 -n 10 -w 1000 > nul" + "\n");
+	   				} else {
+		   				duration = Integer.parseInt(durationStr) + 10;
+		   				bat.write("ping 127.0.0.1 -n "
+		   						+ duration
+		   						+ " -w 1000 > nul" + "\n");
+		   			}
 	   			}
 	   			
 	   			// write AutoTest cmd
